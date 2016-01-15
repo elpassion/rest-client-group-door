@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
         val editText = findViewById(R.id.edit_text) as EditText
         val recyclerView = findViewById(R.id.recycler_view) as RecyclerView
 
-        
     }
 
 }
