@@ -11,8 +11,7 @@ import java.util.*
 /**
  * Created by jasiekpor on 15.01.2016.
  */
-class PlaceAdapter(places: List<PlaceRating>) : RecyclerView.Adapter<ViewHolder>() {
-    val places = places
+class PlaceAdapter(val places: List<PlaceRating>) : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder? {
         val layoutInflater = LayoutInflater.from(parent!!.context)
