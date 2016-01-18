@@ -1,5 +1,6 @@
 package com.example.jasiekpor.restclientapp2
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -23,6 +24,9 @@ class MainActivity : AppCompatActivity(), GlobalActivity{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val intent = Intent(this, RetrofitActivity::class.java)
+        startActivity(intent)
+
 
         val userPlace = editText.text.toString()
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
@@ -54,7 +58,7 @@ class MainActivity : AppCompatActivity(), GlobalActivity{
     }
     override fun handleException(e : Exception){
         val snackBar = Snackbar.make(findViewById(R.id.linear_layout),e.message,Snackbar.LENGTH_LONG)
-        editText.setText("No connection!")
+        //editText.setText("No connection!")
         snackBar.show()
     }
 }

@@ -53,7 +53,7 @@ class CallToAPI(val activity: GlobalActivity) : AsyncTask<URL, Int, List<PlaceRa
     private fun readStream(inputStream: BufferedInputStream): List<PlaceRating> {
         val inputStreamReader = inputStream.reader(Charsets.UTF_8)
         val gson = Gson()
-        val response = gson.fromJson(inputStreamReader, Response::class.java)
+        val response = gson.fromJson(inputStreamReader, NearPlacesResponse::class.java)
 
         return response.results
     }
