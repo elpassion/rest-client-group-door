@@ -1,10 +1,13 @@
 package com.example.jasiekpor.restclientapp2
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import org.json.JSONArray
 import java.util.*
 
@@ -25,24 +28,27 @@ class PlaceAdapter(val places: List<PlaceRating>) : RecyclerView.Adapter<ViewHol
         throw UnsupportedOperationException()
     }
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val viewHolder = holder as ViewHolder
-        viewHolder.placeTextView!!.text = places.get(position).name
-        viewHolder.rateingTextView!!.text = places.get(position).rating.toString()
-
-           //     throw UnsupportedOperationException()
+        viewHolder.placeTextView.text = places.get(position).name
+        viewHolder.rateingTextView.text = places.get(position).rating.toString()
+        Glide.with(viewHolder.iconView.context).load(places.get(position).icon).into(viewHolder.iconView)
+        //     throw UnsupportedOperationException()
     }
 
 
 }
 
 class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    var placeTextView: TextView? = null
-    var rateingTextView: TextView? = null
+    var placeTextView: TextView
+    var rateingTextView: TextView
+    var iconView: ImageView
+
 
     init {
         placeTextView = view.findViewById(R.id.place) as TextView
         rateingTextView = view.findViewById(R.id.rating) as TextView
+        iconView = view.findViewById(R.id.image_view) as ImageView
     }
 
 
