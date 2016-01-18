@@ -1,11 +1,7 @@
 package com.example.jasiekpor.restclientapp2
 
-import android.app.Activity
 import android.os.AsyncTask
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import org.json.JSONArray
-import org.json.JSONObject
+import com.google.gson.Gson
 import java.io.BufferedInputStream
 import java.net.HttpURLConnection
 import java.net.URL
@@ -14,7 +10,7 @@ import java.util.*
 /**
  * Created by jasiekpor on 15.01.2016.
  */
-class CallToAPI(val activity: GlobalActivity) : AsyncTask<URL, Int, List<PlaceRating>>(){
+class CallToAPI(val activity: GlobalActivity) : AsyncTask<URL, Int, List<PlaceRating>>() {
     companion object {
         private val nameKey = "name"
         private val ratingKey = "rating"
@@ -23,46 +19,42 @@ class CallToAPI(val activity: GlobalActivity) : AsyncTask<URL, Int, List<PlaceRa
 
 
     override fun doInBackground(vararg params: URL?): List<PlaceRating>? {
-        for (url in params) {
-            return startConnection(url!!)
+        try {
+            return startConnection(params[0]!!)
+        } catch(e: Exception) {
+            activity.handleException(e)
+            return null
         }
-
-        throw UnsupportedOperationException()
+        //throw UnsupportedOperationException()
     }
 
-    override fun onPostExecute(result: List<PlaceRating>?) {
-        activity.getResults(result!!)
-        super.onPostExecute(result)
+    override fun onPostExecute(result: List<PlaceRating>) {
+
+            activity.getResults(result)
+
+            super.onPostExecute(result)
     }
 
     private fun startConnection(url: URL): List<PlaceRating> {
         val urlConnection = url.openConnection() as HttpURLConnection
         var inputStream: BufferedInputStream? = null
-        var places: List<PlaceRating>? = null
+        var places: List<PlaceRating> =  ArrayList()
         try {
             inputStream = BufferedInputStream(urlConnection.inputStream)
             places = readStream(inputStream)
+        }catch(e:Exception){
+            activity.handleException(e)
         } finally {
             urlConnection.disconnect()
         }
-        return places!!
+        return places
     }
 
     private fun readStream(inputStream: BufferedInputStream): List<PlaceRating> {
         val inputStreamReader = inputStream.reader(Charsets.UTF_8)
-        val jsonObject = JSONObject(inputStreamReader.readText())
-        val places: ArrayList<PlaceRating> = ArrayList()
-        val results: JSONArray = jsonObject.get(resultsKey) as JSONArray
-        for (i in 0..results.length() - 1) {
-            val placeName: String = results.getJSONObject(i).getString(nameKey)
-            var placeRating: Double = 0.0
-            if (!results.getJSONObject(i).isNull(ratingKey)) {
-                placeRating = results.getJSONObject(i).getDouble(ratingKey)
-            }
+        val gson = Gson()
+        val response = gson.fromJson(inputStreamReader, Response::class.java)
 
-                places.add(PlaceRating(placeName, placeRating))
-
-        }
-        return places
+        return response.results
     }
 }

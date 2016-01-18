@@ -1,6 +1,7 @@
 package com.example.jasiekpor.restclientapp2
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -9,7 +10,8 @@ import android.widget.EditText
 import java.net.URL
 import java.net.URLEncoder
 
-class MainActivity : AppCompatActivity(), GlobalActivity {
+class MainActivity : AppCompatActivity(), GlobalActivity{
+
     override fun getResults(places:List<PlaceRating>) {
         recyclerView.adapter = PlaceAdapter(places)
         //throw UnsupportedOperationException()
@@ -49,5 +51,10 @@ class MainActivity : AppCompatActivity(), GlobalActivity {
         val string = URLEncoder.encode(place,"UTF-8").replace("+","%20")
         val urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=52.2398936,20.9880451&radius=5000&name=$string&key=%20AIzaSyC8Cl3TYbzkZ6bb8_fwKeMhFvx_Be6B0CY"
         callToAPI.execute(URL(urlString))
+    }
+    override fun handleException(e : Exception){
+        val snackBar = Snackbar.make(findViewById(R.id.linear_layout),e.message,Snackbar.LENGTH_LONG)
+        editText.setText("No connection!")
+        snackBar.show()
     }
 }

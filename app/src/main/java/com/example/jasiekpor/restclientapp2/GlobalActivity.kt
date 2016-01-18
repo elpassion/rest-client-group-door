@@ -5,4 +5,5 @@ package com.example.jasiekpor.restclientapp2
  */
 interface GlobalActivity {
     public fun getResults(places:List<PlaceRating>)
+    public fun handleException(e: Exception)
 }
